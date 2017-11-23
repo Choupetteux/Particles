@@ -71,6 +71,7 @@ public class ParticlesController {
 				canvas.getGraphicsContext2D().fillRect(0,0,200,200);
 				for(Particle particle : particles){
 					particle.draw();
+					pool.submit(particle);
 				}
 			}
 		});

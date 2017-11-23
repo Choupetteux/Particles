@@ -82,13 +82,14 @@ public class Particle implements Runnable {
     		this.controller.addParticle();
     	}
     	else{
+    		try {
+			Thread.sleep(25);
     		this.update();
     		this.controller.drawParticles();
-    		try {
-				Thread.sleep(25);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+    		} catch (InterruptedException e) {
+			e.printStackTrace();
+    		}
+    		
     	}
     }
 }
