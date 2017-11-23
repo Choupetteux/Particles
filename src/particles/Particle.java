@@ -33,8 +33,8 @@ public class Particle implements Runnable {
     	this.x=100;
     	this.y=100;
     	this.color=Color.color(Math.random(), Math.random(), Math.random());
-    	this.vx= (Math.random() * (this.SIZE - (-this.SIZE) + 1)) + (-this.SIZE);
-    	this.vy= (Math.random() * (this.SIZE - (-this.SIZE) + 1)) + (-this.SIZE);
+    	this.vx= (Math.random() * (Particle.SIZE - (-Particle.SIZE) + 1)) + (-Particle.SIZE);
+    	this.vy= (Math.random() * (Particle.SIZE - (-Particle.SIZE) + 1)) + (-Particle.SIZE);
     }
 
     /**
@@ -43,14 +43,15 @@ public class Particle implements Runnable {
      */
     public void draw() {
     	this.controller.getCanvas().getGraphicsContext2D().setFill(this.color);
-    	this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, this.SIZE, this.SIZE);
+    	this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, Particle.SIZE, Particle.SIZE);
     }
 
     /**
      * met Ã  jour la position de la particule
      */
     public void update() {
-    	//TODO
+    	this.x = this.x + this.vx;
+    	this.y = this.y + this.vy;
     }
 
     /**
@@ -60,7 +61,7 @@ public class Particle implements Runnable {
      * @return true si la particule est visible, false sinon
      */
     public boolean isVisible() {
-        return false;
+        return !(this.x < 0 || this.x > 200 || this.y < 0 || this.y > 200);
     }
 
     /**
@@ -76,6 +77,18 @@ public class Particle implements Runnable {
      *   - ajouter une nouvelle particule au contrÃ´leur
      */
     public void run() {
-    	//TODO
+    	if(!isVisible()){
+    		this.controller.removeParticle(this);
+    		this.controller.addParticle();
+    	}
+    	else{
+    		this.update();
+    		this.controller.drawParticles();
+    		try {
+				Thread.sleep(25);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	}
     }
 }

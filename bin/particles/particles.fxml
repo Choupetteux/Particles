@@ -6,8 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.StackPane?>
 
-
-<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.91" fx:controller="particles.ParticlesController">
+<StackPane xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="particles.ParticlesController">
    <children>
       <Canvas fx:id="canvas" height="200.0" width="200.0" />
       <Button mnemonicParsing="false" onAction="#onAdd" text="Button" StackPane.alignment="BOTTOM_LEFT">
@@ -15,6 +14,6 @@
             <Insets />
          </StackPane.margin>
       </Button>
-      <Label fx:id="label" text="Label" />
+      <Label fx:id="label" StackPane.alignment="BOTTOM_RIGHT" />
    </children>
 </StackPane>
