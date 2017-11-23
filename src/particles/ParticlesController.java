@@ -44,9 +44,9 @@ public class ParticlesController {
 	 * ajoute une nouvelle particule à  la liste et la soumet au pool
 	 */
 	public void addParticle() {
-		this.particles.add(new Particle(this));
-
-
+		Particle particle = new Particle(this);
+		this.particles.add(particle);
+		pool.submit(particle);
 	}
 
 	/**
