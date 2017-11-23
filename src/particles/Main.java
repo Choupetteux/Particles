@@ -24,4 +24,10 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        System.exit(0);
+    }
 }
