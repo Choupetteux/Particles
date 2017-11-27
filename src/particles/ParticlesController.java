@@ -73,8 +73,8 @@ public class ParticlesController {
 		Platform.runLater(new Runnable(){
 			@Override
 			public void run() {
-				canvas.getGraphicsContext2D().setFill(Color.BLACK);
-				canvas.getGraphicsContext2D().fillRect(0,0,200,200);
+				//canvas.getGraphicsContext2D().setFill(Color.BLACK);
+				//canvas.getGraphicsContext2D().fillRect(0,0,200,200);
 				synchronized(particles){
 					for(Particle particle : particles){
 						particle.draw();

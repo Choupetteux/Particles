@@ -42,10 +42,11 @@ public class Particle implements Runnable {
 	 * Cette mÃ©thode sera invoquÃ©eÃ©e par la mÃ©thode drawParticles du contrÃ´leur
 	 */
 	public void draw() {
-		this.controller.getCanvas().getGraphicsContext2D().setFill(this.color);
-		this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, Particle.SIZE, Particle.SIZE);
-		//this.controller.getCanvas().getGraphicsContext2D().setFill(Color.WHITE);
-		//this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, (Particle.SIZE*1.2), (Particle.SIZE*1.2));
+		//this.controller.getCanvas().getGraphicsContext2D().setFill(this.color);
+		//this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, Particle.SIZE, Particle.SIZE);
+		this.controller.getCanvas().getGraphicsContext2D().setFill(Color.WHITE);
+		this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, (Particle.SIZE*1.2), (Particle.SIZE*1.2));
+
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class Particle implements Runnable {
 				e.printStackTrace();
 			}
 		}
-    	this.controller.removeParticle(this);
-    	this.controller.addParticle();
+		this.controller.removeParticle(this);
+		this.controller.addParticle();
 	}
 }
