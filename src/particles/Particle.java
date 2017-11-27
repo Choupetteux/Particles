@@ -44,12 +44,14 @@ public class Particle implements Runnable {
 	public void draw() {
 		this.controller.getCanvas().getGraphicsContext2D().setFill(this.color);
 		this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, Particle.SIZE, Particle.SIZE);
+		//this.controller.getCanvas().getGraphicsContext2D().setFill(Color.WHITE);
+		//this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, (Particle.SIZE*1.2), (Particle.SIZE*1.2));
 	}
 
 	/**
 	 * met Ã  jour la position de la particule
 	 */
-	public void update() {
+	public synchronized void update() {
 		this.x = this.x + this.vx;
 		this.y = this.y + this.vy;
 	}
@@ -60,7 +62,7 @@ public class Particle implements Runnable {
 	 * 
 	 * @return true si la particule est visible, false sinon
 	 */
-	public boolean isVisible() {
+	public synchronized boolean isVisible() {
 		return !(this.x < 0 || this.x > 200 || this.y < 0 || this.y > 200);
 	}
 
@@ -76,7 +78,7 @@ public class Particle implements Runnable {
 	 *   - retirer la particule du contrÃ´leur
 	 *   - ajouter une nouvelle particule au contrÃ´leur
 	 */
-	public  void run() {
+	public synchronized void run() {
 		while(isVisible()){
 			try {
 				Thread.sleep(25);

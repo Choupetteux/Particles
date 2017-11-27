@@ -35,9 +35,11 @@ public class ParticlesController {
 	 */
 	@FXML
 	public void onAdd() {
-		this.addParticle();
-		this.label.setText(this.particles.size() + " particules");
+		synchronized(this.particles){
+			this.addParticle();
 
+			this.label.setText(this.particles.size() + " particules");
+		}
 	}
 
 	/**
@@ -45,7 +47,9 @@ public class ParticlesController {
 	 */
 	public void addParticle() {
 		Particle particle = new Particle(this);
-		this.particles.add(particle);
+		synchronized(this.particles){
+			this.particles.add(particle);
+		}
 		pool.submit(particle);
 	}
 
@@ -56,7 +60,9 @@ public class ParticlesController {
 	 *            particule Ã  retirer
 	 */
 	public void removeParticle(Particle p) {
-		this.particles.remove(p);   	
+		synchronized(this.particles){
+			this.particles.remove(p);
+		}
 
 	}
 
@@ -69,8 +75,10 @@ public class ParticlesController {
 			public void run() {
 				canvas.getGraphicsContext2D().setFill(Color.BLACK);
 				canvas.getGraphicsContext2D().fillRect(0,0,200,200);
-				for(Particle particle : particles){
-					particle.draw();
+				synchronized(particles){
+					for(Particle particle : particles){
+						particle.draw();
+					}
 				}
 			}
 		});
