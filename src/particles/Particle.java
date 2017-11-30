@@ -52,9 +52,12 @@ public class Particle implements Runnable {
 	/**
 	 * met Ã  jour la position de la particule
 	 */
-	public synchronized void update() {
+	public void update() {
 		this.x = this.x + this.vx;
 		this.y = this.y + this.vy;
+		for(Particle particle : this.controller.getParticle()){
+			this.collisionTest(particle);
+		}
 	}
 
 	/**
@@ -63,7 +66,7 @@ public class Particle implements Runnable {
 	 * 
 	 * @return true si la particule est visible, false sinon
 	 */
-	public synchronized boolean isVisible() {
+	public boolean isVisible() {
 		return !(this.x < 0 || this.x > 200 || this.y < 0 || this.y > 200);
 	}
 
@@ -79,7 +82,7 @@ public class Particle implements Runnable {
 	 *   - retirer la particule du contrÃ´leur
 	 *   - ajouter une nouvelle particule au contrÃ´leur
 	 */
-	public synchronized void run() {
+	public void run() {
 		while(isVisible()){
 		try {
 			Thread.sleep(25);
@@ -101,7 +104,46 @@ public class Particle implements Runnable {
 		if (this.y>=200-(Particle.SIZE) || this.y<=0+(Particle.SIZE)){
 			this.vy=-vy;
 		}
-
 	}
+	
+
+    /**
+     * effectue un test de collision entre la particule courante et
+     * la particule p. S'il y a collision, les vitesses des particules sont
+     * recalculées en fonction des vitesses initiales.
+     * @param p particule à tester
+     */
+    private void collisionTest(Particle p) {
+        if (p == this) {
+            return;
+        }
+        double nx = x - p.x;
+        double ny = y - p.y;
+        double d = Math.sqrt(nx * nx + ny * ny);
+        if (d <= SIZE && d > 0.0001) {
+            nx = nx * (SIZE - d) / d;
+            ny = ny * (SIZE - d) / d;
+            x += nx * 0.5;
+            y += ny * 0.5;
+            p.x -= nx * 0.5;
+            p.y -= ny * 0.5;
+            d = Math.sqrt(nx * nx + ny * ny);
+            nx /= d;
+            ny /= d;
+            double vn = (vx - p.vx) * nx + (vy - p.vy) * ny;
+            if (vn > 0.0) {
+                return;
+            }
+            vn *= -0.9;
+            nx *= vn;
+            ny *= vn;
+            vx += nx;
+            vy += ny;
+            p.vx -= nx;
+            p.vy -= ny;
+        }
+    }
+    
+	
 }
 
