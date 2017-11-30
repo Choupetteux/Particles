@@ -41,23 +41,26 @@ public class Particle implements Runnable {
 	 * dessine la particule sur le Canvas du contrÃ´leur.
 	 * Cette mÃ©thode sera invoquÃ©eÃ©e par la mÃ©thode drawParticles du contrÃ´leur
 	 */
-	public void draw() {
+	public synchronized void draw() {
 		this.controller.getCanvas().getGraphicsContext2D().setFill(this.color);
 		this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, Particle.SIZE, Particle.SIZE);
-		//this.controller.getCanvas().getGraphicsContext2D().setFill(Color.WHITE);
-		//this.controller.getCanvas().getGraphicsContext2D().fillOval(x, y, (Particle.SIZE*1.2), (Particle.SIZE*1.2));
+	//	this.controller.getCanvas().getGraphicsContext2D().setFill(Color.WHITE);
+	//	this.controller.getCanvas().getGraphicsContext2D().fillOval(x-0.5, y-0.5, (Particle.SIZE*1.2), (Particle.SIZE*1.2));
 
 	}
 
 	/**
 	 * met Ã  jour la position de la particule
 	 */
-	public void update() {
-		this.x = this.x + this.vx;
-		this.y = this.y + this.vy;
-		for(Particle particle : this.controller.getParticle()){
-			this.collisionTest(particle);
+	public synchronized void update() {
+		this.rebondir();
+		synchronized(this.controller.getParticle()) {
+			for(Particle p : this.controller.getParticle()){
+				this.collisionTest(p);
+			}
 		}
+		this.x += this.vx;
+		this.y += this.vy;
 	}
 
 	/**
@@ -67,7 +70,8 @@ public class Particle implements Runnable {
 	 * @return true si la particule est visible, false sinon
 	 */
 	public boolean isVisible() {
-		return !(this.x < 0 || this.x > 200 || this.y < 0 || this.y > 200);
+		return true ;
+		//return !((this.x < 0-Particle.SIZE/2 || this.x > this.controller.getCanvas().getWidth()+Particle.SIZE/2) || (this.y < 0-Particle.SIZE/2 || this.y > this.controller.getCanvas().getHeight()+Particle.SIZE/2));
 	}
 
 	/**
@@ -86,23 +90,30 @@ public class Particle implements Runnable {
 		while(isVisible()){
 		try {
 			Thread.sleep(25);
-			this.update();;
+			this.update();
 			this.controller.drawParticles();
-			this.rebondir();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		}
-		//this.controller.removeParticle(this);
-		//this.controller.addParticle();
+		this.controller.removeParticle(this);
+		this.controller.addParticle();
 	}
 
-	public void rebondir(){
-		if (this.x>=200-(Particle.SIZE) || this.x<=0+(Particle.SIZE)){
-			this.vx=-vx;
+	public synchronized void rebondir(){
+		double height = this.controller.getCanvas().getHeight();
+		double width = this.controller.getCanvas().getWidth();
+		if (this.x>=width-SIZE){
+			this.vx=-Math.abs(this.vx);
 		}
-		if (this.y>=200-(Particle.SIZE) || this.y<=0+(Particle.SIZE)){
-			this.vy=-vy;
+		if (this.x<0){
+			this.vx=Math.abs(this.vx);
+		}
+		if (this.y>=height-SIZE){
+			this.vy=-Math.abs(this.vy);
+		}
+		if (this.y<0){
+			this.vy=Math.abs(this.vy);
 		}
 	}
 	
@@ -142,7 +153,9 @@ public class Particle implements Runnable {
             p.vx -= nx;
             p.vy -= ny;
         }
+      
     }
+    
     
 	
 }
