@@ -30,7 +30,7 @@ public class ParticlesController {
 		return this.canvas;
 	}
 	
-	public ArrayList<Particle> getParticle(){
+	public ArrayList<Particle> getParticles(){
 		return this.particles;
 	}
 

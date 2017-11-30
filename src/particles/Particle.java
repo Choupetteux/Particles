@@ -52,15 +52,17 @@ public class Particle implements Runnable {
 	/**
 	 * met Ã  jour la position de la particule
 	 */
-	public synchronized void update() {
+	public void update() {
 		this.rebondir();
-		synchronized(this.controller.getParticle()) {
-			for(Particle p : this.controller.getParticle()){
+		synchronized(this.controller.getParticles()) {
+			for(Particle p : this.controller.getParticles()){
 				this.collisionTest(p);
 			}
 		}
-		this.x += this.vx;
-		this.y += this.vy;
+		synchronized(this){
+			this.x += this.vx;
+			this.y += this.vy;
+		}
 	}
 
 	/**
