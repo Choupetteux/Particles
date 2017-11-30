@@ -29,6 +29,10 @@ public class ParticlesController {
 	public Canvas getCanvas() {
 		return this.canvas;
 	}
+	
+	public ArrayList<Particle> getParticle(){
+		return this.particles;
+	}
 
 	/**
 	 * ajoute une nouvelle particule (addParticle) à  la liste et met à  jour le texte du label.
